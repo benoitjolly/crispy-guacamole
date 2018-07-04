@@ -7,16 +7,26 @@ export function concatDataByDate(data){
     if (typeof data[0] !== 'undefined' && typeof data[0]['day'] !== 'undefined'){
         
         console.log("ok");
-
-        const result = data.reduce((a, b, c ,d) => {
-          
-            // if(a.day == b.day){
-            //     return { impressions: a.impressions }
-            // }
-            return null;
+        let curr = {};
+        let dataMdrged = [];
+        data.forEach(element => {
+            if(curr.day === element.day){
+                curr.impressions = curr.impressions + element.impressions;
+                // Object.keys(curr).forEach(function(key,index) {
+                //     if(key !== 'day' && typeof curr[key] === 'Number'){
+                //         curr[key] = curr[key] + element[key];
+                //     }
+                //     // key: the name of the object key
+                //     // index: the ordinal position of the key within the object 
+                // });
+            }else{
+                curr = element;
+                dataMdrged.push(curr);
+            }
         });
         
-        console.log(result);         
+        console.log(dataMdrged);     
+        return dataMdrged;    
     }
 
     return data;
