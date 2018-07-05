@@ -16,7 +16,7 @@ class StatsForm extends Component {
 
     constructor(props) {
         super(props);
-        this.columList = [{value:'day',label:'Day'},{value:'impressions',label:'Impressions'},{value:'clicks',label:'Clicks'},{value:'ctr',label:'Ctr'},{value:'cost',label:'Cost'},{value:'country',label:'Country'},{value:'ad_type',label:'Ad type'},{value:'platform',label:'Platform'},{value:'application',label:'Application'},{value:'package_name',label:'Package name'}];
+        this.columList = staticData.kpiValue;
     }
 
     componentDidMount() {
@@ -65,6 +65,7 @@ class StatsForm extends Component {
         const endDate = moment(this.props.stats.endDate);
         const columList = this.columList;
         const stat = this.props.statsData;
+        
         return (
             <div className="container">
                 <div className="post-container">

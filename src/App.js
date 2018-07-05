@@ -11,7 +11,7 @@ class App extends Component {
       <div className="App">
 
         <div className="navbar">
-          <h2 className="center ">Post It</h2>
+          <h2 className="center ">Stats Board</h2>
         </div>
 
         <Router>
