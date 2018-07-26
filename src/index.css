@@ -65,9 +65,17 @@ button {
 .table {
   width: 100%;
   overflow: scroll;
+  font-size: 10px;
 }
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
 .table td {
   width: 100%;
+  text-align: center;
 }
 .Select {
   width: 100%;

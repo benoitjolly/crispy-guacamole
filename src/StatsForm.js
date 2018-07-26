@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { concatDataByDate } from './utils';
-import Select from 'react-select';
+import { concatDataByCountry } from './utils';
+// import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import apiCall from './api';
@@ -16,11 +16,14 @@ class StatsForm extends Component {
 
     constructor(props) {
         super(props);
-        this.columList = staticData.kpiValue;
+        this.columList = staticData.defaultKpiValues;
+        this.getAcquisitionData = this.getAcquisitionData.bind(this);
     }
 
     componentDidMount() {
         this.props.dispatch({ type: 'LOADING_FALSE' });
+        var event = new Event('auto');
+        this.getAcquisitionData(event);
     }
 
     handleChangeKpi = (kpiValue) => {
@@ -37,7 +40,7 @@ class StatsForm extends Component {
 
     getAcquisitionData = (e) => {
         e.preventDefault();
-        const columns = this.props.stats.kpi.map((kpi) => {
+        const columns = this.columList.map((kpi) => {
             return kpi.value;
         }).toString();
         const data = {
@@ -46,9 +49,12 @@ class StatsForm extends Component {
             columns,
         }
         this.props.dispatch({ type: 'LOADING_TRUE' });
+        // var datab = staticData.data;
+        // const cleanedData = concatDataByCountry(datab.data);
+        // this.props.dispatch({type: 'SET_ACQUISITION_DATA', data: cleanedData})
         apiCall(staticData.AcquisitionURL, data)
         .then((response) => {
-            const cleanedData = concatDataByDate(response.data.data);
+            const cleanedData = concatDataByCountry(response.data.data);
             this.props.dispatch({type: 'SET_ACQUISITION_DATA', data: cleanedData})
             this.props.dispatch({ type: 'LOADING_FALSE' });
             this.props.dispatch({ type: 'NO_ERROR_RECEIVED' });
@@ -60,10 +66,10 @@ class StatsForm extends Component {
 
 
     render() {
-        const kpiValue = this.props.stats.kpi;
+        // const kpiValue = this.props.stats.kpi;
         const startDate = moment(this.props.stats.startDate);
         const endDate = moment(this.props.stats.endDate);
-        const columList = this.columList;
+        // const columList = this.columList;
         const stat = this.props.statsData;
         
         return (
@@ -86,30 +92,47 @@ class StatsForm extends Component {
                         minDate={startDate}
                     />
                     <br />
-                    <label>Kpi:</label>
-                    <Select
+                    {/*<label>Kpi:</label>
+                     <Select
                         name="form-field-name"
                         value={kpiValue}
                         clearable
                         multi
                         onChange={this.handleChangeKpi}
                         options={columList}
-                    />
+                    /> */}
                     <button>GO!</button>
                 </form>
-
+              </div>
                 {this.props.loading ? <div className="spinner">
                     <div className="rect1"></div>
                     <div className="rect2"></div>
                     <div className="rect3"></div>
                     <div className="rect4"></div>
                     <div className="rect5"></div>
-                </div> : null}
-
-                {this.props.errors ? <p style={{ color: '#ff7777' }}>{this.props.errors.message}</p> : null}
+                </div> : <div className="post-container">
                     <div className="table">
                         <table>                 
                             
+                            <tbody>
+                                <tr>
+                                <td>Platform</td>
+                                <td>Application</td>
+                                    {Object.keys(stat).map((el,index) => {
+                                      return (<td key={index}>{el}</td>);
+                                    }) }
+                                <td>Total</td>
+                                </tr>
+                                {/* {Object.keys(stat).map((data,i) => (
+                                    <tr key={i}>
+                                        {Object.keys(data).map((key, index) => (
+                                            <td key={key}>{data[key]}</td>
+                                        ))}
+                                    </tr>
+                                ))} */}
+                            </tbody>
+                        </table> 
+                        {/* <table>                 
                             <tbody>
                                 <tr>
                                     {stat.length > 0 ?  Object.keys(stat[0]).map((key, index) => (
@@ -124,9 +147,11 @@ class StatsForm extends Component {
                                     </tr>
                                 ))}
                             </tbody>
-                        </table>   
+                        </table>    */}
                     </div>             
-                </div>
+                </div>}
+            
+            {this.props.errors ? <p style={{ color: '#ff7777' }}>{this.props.errors.message}</p> : null}
             </div>
         );
     }

@@ -1,29 +1,48 @@
 import staticData from './static.js';
-
+import _ from 'lodash';
 export function generateId(){
     return Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36);
 };
 
-export function concatDataByDate(data){   
+export function concatDataByApplication(data){
+    if (typeof data[0] !== 'undefined'){
+
+    }
+}
+
+export function concatDataByCountry(data){   
     
-    if (typeof data[0] !== 'undefined' && typeof data[0]['day'] !== 'undefined'){
-        let curr = {};
-        let dataMdrged = [];
-        data.forEach(element => {
-            if(curr.day === element.day){
-                curr.impressions = curr.impressions + element.impressions;
-                for (let i = 0; i < staticData.kpiValue.length; i++) {
-                  if(typeof curr[staticData.kpiValue[i].value] !== 'undefined' && typeof curr[staticData.kpiValue[i].value] === 'string' && curr[staticData.kpiValue[i].value].indexOf(element[staticData.kpiValue[i].value]) === -1){
-                        curr[staticData.kpiValue[i].value] = curr[staticData.kpiValue[i].value].concat([`,${element[staticData.kpiValue[i].value]}`]);
-                      }
-                    }
-            }else{
-                curr = element;
-                dataMdrged.push(curr);
-            }
+    if (typeof data[0] !== 'undefined'){
+      let curr = {};
+      let dataMerged;
+      dataMerged = _.groupBy(data, 'country');
+     
+      Object.keys(dataMerged).forEach((element, index) => {
+        dataMerged[element] =  _.groupBy(dataMerged[element], 'platform');
+      });
+
+      Object.keys(dataMerged).forEach((parent, index) => {
+        Object.keys(dataMerged[parent]).forEach((enfant, index) => {
+          dataMerged[parent][enfant] =  _.groupBy(dataMerged[parent][enfant], 'application');
         });
-        
-        return dataMdrged;    
+      });
+
+      Object.keys(dataMerged).forEach((parent, index) => {
+        Object.keys(dataMerged[parent]).forEach((enfant, index) => {
+          Object.keys(dataMerged[parent][enfant]).forEach((sousEnfant, index) => {
+            const obj = {impressions: 0, clicks:0, ctr:0, cost:0,};
+            dataMerged[parent][enfant][sousEnfant] = dataMerged[parent][enfant][sousEnfant].reduce(function(a,b){
+              obj.impressions += b.impressions;
+              obj.clicks += b.clicks;
+              obj.cost += b.cost;
+              return obj;
+            });
+            dataMerged[parent][enfant][sousEnfant].ctr = dataMerged[parent][enfant][sousEnfant].impressions / dataMerged[parent][enfant][sousEnfant].clicks;
+          });
+        });
+      });
+      console.log(dataMerged);
+      return dataMerged;    
     }
 
     return data;
