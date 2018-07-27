@@ -16,14 +16,15 @@ class StatsForm extends Component {
 
     constructor(props) {
         super(props);
-        this.columList = staticData.defaultKpiValues;
-        this.getAcquisitionData = this.getAcquisitionData.bind(this);
+        this.defaultKpiValues = staticData.defaultKpiValues;
+        this.MonetizationAggregate = staticData.MonetizationAggregates;
+        this.MonetizationDimensions = staticData.MonetizationDimensionsion;
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         this.props.dispatch({ type: 'LOADING_FALSE' });
         var event = new Event('auto');
-        this.getAcquisitionData(event);
+        this.getData(event);
     }
 
     handleChangeKpi = (kpiValue) => {
@@ -40,7 +41,8 @@ class StatsForm extends Component {
 
     getAcquisitionData = (e) => {
         e.preventDefault();
-        const columns = this.columList.map((kpi) => {
+
+        const columns = this.defaultKpiValues.map((kpi) => {
             return kpi.value;
         }).toString();
         const data = {
@@ -49,33 +51,94 @@ class StatsForm extends Component {
             columns,
         }
         this.props.dispatch({ type: 'LOADING_TRUE' });
-        // var datab = staticData.data;
-        // const cleanedData = concatDataByCountry(datab.data);
-        // this.props.dispatch({type: 'SET_ACQUISITION_DATA', data: cleanedData})
-        apiCall(staticData.AcquisitionURL, data)
+    
+        apiCall(staticData.AcquisitionURL, data, false)
         .then((response) => {
             const cleanedData = concatDataByCountry(response.data.data);
-            this.props.dispatch({type: 'SET_ACQUISITION_DATA', data: cleanedData})
+            this.props.dispatch({type: 'SET_ACQUISITION_DATA', data: cleanedData});
             this.props.dispatch({ type: 'LOADING_FALSE' });
             this.props.dispatch({ type: 'NO_ERROR_RECEIVED' });
         }).catch((error) => {
             this.props.dispatch({ type: 'LOADING_FALSE' });
             this.props.dispatch({ type: 'ERROR_RECEIVED' }, error.message);
-        });        
+        });  
     }
 
+    getMonetizationData = (e) => {
+        e.preventDefault();
+
+        const aggregates = this.MonetizationAggregate.map((kpi) => {
+            return kpi.value;
+        }).toString();
+        const dimensions = this.MonetizationDimensions.map((kpi) => {
+            return kpi.value;
+        }).toString();
+        const data = {
+            startDate: this.props.stats.startDate,
+            endDate: this.props.stats.endDate,
+            dimensions: dimensions,
+            aggregates: aggregates,
+        }
+        this.props.dispatch({ type: 'LOADING_TRUE' });
+     
+        apiCall(staticData.MonetizationURL, data, true)
+        .then((response) => {
+            const cleanedData = response.data.data;//concatDataByCountry(response.data.data);
+            console.log(cleanedData);
+            this.props.dispatch({type: 'SET_MONETIZATION_DATA', data: cleanedData})
+            this.props.dispatch({ type: 'LOADING_FALSE' });
+            this.props.dispatch({ type: 'NO_ERROR_RECEIVED' });
+        }).catch((error) => {
+            this.props.dispatch({ type: 'LOADING_FALSE' });
+            this.props.dispatch({ type: 'ERROR_RECEIVED' }, error.message);
+        });  
+    }
+
+    getData = (e) => {
+        e.preventDefault();
+        this.getAcquisitionData(e);
+        this.getMonetizationData(e);
+    }
+
+    createTable = (data) => {
+        let table = []
+
+        // Outer loop to create parent
+        for (let i = 0; i < 3; i++) {
+            let children = []
+            //Inner loop to create children
+            for (let j = 0; j < 5; j++) {
+            children.push(<td key={`${i}${j}`}>{`Column ${j + 1}`}</td>)
+            }
+            //Create the parent and add the children
+            table.push(<tr key={i}>{children}</tr>)
+        }
+
+        return table
+    }
 
     render() {
         // const kpiValue = this.props.stats.kpi;
         const startDate = moment(this.props.stats.startDate);
         const endDate = moment(this.props.stats.endDate);
-        // const columList = this.columList;
+        // const defaultKpiValues = this.defaultKpiValues;
         const stat = this.props.statsData;
+
+        const sub = ({ prop, index }) => (
+            Object.keys(prop).map((el,index) => {
+                return (
+                    <tr key={index}>
+                        <td>{el}</td>
+                    </tr>
+                );
+            })
+          );
         
         return (
+            
             <div className="container">
                 <div className="post-container">
-                <form onSubmit={this.getAcquisitionData}>
+                <form onSubmit={this.getData}>
                     <label>Start Date:</label>
                     <DatePicker
                         className="Select"
@@ -99,7 +162,7 @@ class StatsForm extends Component {
                         clearable
                         multi
                         onChange={this.handleChangeKpi}
-                        options={columList}
+                        options={defaultKpiValues}
                     /> */}
                     <button>GO!</button>
                 </form>
@@ -112,17 +175,24 @@ class StatsForm extends Component {
                     <div className="rect5"></div>
                 </div> : <div className="post-container">
                     <div className="table">
+
+                   
                         <table>                 
                             
                             <tbody>
-                                <tr>
-                                <td>Platform</td>
-                                <td>Application</td>
-                                    {Object.keys(stat).map((el,index) => {
-                                      return (<td key={index}>{el}</td>);
-                                    }) }
-                                <td>Total</td>
-                                </tr>
+                            {this.createTable()}
+                                
+                                    {
+                                        Object.keys(stat).map((el,index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td>{el}</td>
+                                                </tr>
+                                            );
+                                        })
+                                     }
+                               
+                                
                                 {/* {Object.keys(stat).map((data,i) => (
                                     <tr key={i}>
                                         {Object.keys(data).map((key, index) => (
@@ -162,6 +232,7 @@ const mapStateToProps = (state) => ({
     errors: state.errors,
     loading: state.loading,
     statsData: state.statsData,
+    statsMonetizationData: state.statsMonetizationData,
 })
 
 export default connect(mapStateToProps)(StatsForm);

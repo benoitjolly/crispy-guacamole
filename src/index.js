@@ -10,6 +10,7 @@ import errorReducer from './reducers/errorReducer';
 import loadingReducer from './reducers/loadingReducer';
 import statsReducer from './reducers/statsReducer';
 import statsDataReducer from './reducers/statsDataReducer';
+import statsMonetizationReducer from './reducers/monetizationReducer';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
@@ -22,6 +23,7 @@ const reducer = combineReducers({
     loading: loadingReducer,
     stats: statsReducer,
     statsData: statsDataReducer,
+    statsMonetizationData: statsMonetizationReducer,
 })
 
 const store = createStore(reducer, applyMiddleware(ReduxThunk));
