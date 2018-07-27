@@ -65,7 +65,7 @@ button {
 .table {
   width: 100%;
   overflow: scroll;
-  font-size: 10px;
+  /* font-size: 10px; */
 }
 
 table {
@@ -75,8 +75,25 @@ table {
 
 .table td {
   width: 100%;
-  text-align: center;
+  text-align: left;
 }
+
+.table td.total{
+  text-align: right;
+}
+
+.table td.sub {
+  padding-left: 30px;
+}
+
+.table td.sub2 {
+  padding-left: 60px;
+}
+
+.table tr.sub3 {
+  padding-left: 90px;
+}
+
 .Select {
   width: 100%;
 }

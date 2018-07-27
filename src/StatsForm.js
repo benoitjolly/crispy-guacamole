@@ -19,6 +19,7 @@ class StatsForm extends Component {
         this.defaultKpiValues = staticData.defaultKpiValues;
         this.MonetizationAggregate = staticData.MonetizationAggregates;
         this.MonetizationDimensions = staticData.MonetizationDimensionsion;
+        this.staticData = staticData.data;
     }
 
     componentDidMount = () => {
@@ -97,21 +98,57 @@ class StatsForm extends Component {
     getData = (e) => {
         e.preventDefault();
         this.getAcquisitionData(e);
-        this.getMonetizationData(e);
+        // this.getMonetizationData(e);
+    }
+
+    onClick = (a,b,c) => {
+      console.log("ok");
+      // this.props.dispatch({type: 'SET_VISIBILITY', data: data})
+      if(a){
+        this.props.statsData[a].platform[b].open = !this.props.statsData[a].platform[b].open;
+      }
+
     }
 
     createTable = (data) => {
         let table = []
+      
+        for (let a in data) {
 
-        // Outer loop to create parent
-        for (let i = 0; i < 3; i++) {
-            let children = []
-            //Inner loop to create children
-            for (let j = 0; j < 5; j++) {
-            children.push(<td key={`${i}${j}`}>{`Column ${j + 1}`}</td>)
+          for (let b in data[a].platform) {
+
+            for (let c in data[a].platform[b].application) {
+              if(data[a].platform[b].open){
+                table.unshift(<tr key={`${a}${b}${c}`}><td className="sub"> {`${data[a].platform[b].application[c].name}`}</td><td className="total">{`Total ${b}`}</td></tr>);
+              }
+  
             }
-            //Create the parent and add the children
-            table.push(<tr key={i}>{children}</tr>)
+            table.unshift((<tr key={`${a}${b}`} onClick={this.onClick(a,b)} ><td className="sub"> {`${data[a].platform[b].name}`}</td><td className="total">{`Total ${b}`}</td></tr>));
+
+          }
+          table.unshift(<tr key={`${a}`}><td className="sub"> {`${data[a].name}`}</td><td className="total">{`Total ${a}`}</td></tr>);
+
+            // const b = Object.keys(data[a[i]]);
+            // console.log(b);
+            
+            // for (let j = 0; j < b.length; j++) {
+
+            //   const c = Object.keys(data[a[i]][b[j]]);
+            //   console.log(c);
+
+            //   for (let k = 0; k < c.length; j++) {
+            //     const app = c[k].toString();
+            //     console.log(app);
+            //     const d = Object.keys(data[a[i]][b[j]].app);
+            //     console.log(c);
+            //     // for (let j = 0; j < c.length; j++) {
+            //     // children.push(<tr><td>{`${a[i]}`}</td><td key={`${i}${j}`}>{`Column ${j + 1}`}</td></tr>)
+            //     // }
+            //     table.unshift(<tr key={`${i}${j}${k}`}><td  className="sub3">{`${c[k]}`}</td><td className="total" >{`Total ${j}`}</td></tr>);
+            //   }
+            //   table.unshift(<tr key={`${i}${j}`}><td  className="sub2">{`${b[j]}`}</td><td className="total" >{`Total ${j}`}</td></tr>);
+            // }
+            // table.unshift(<tr key={`${i}`}><td className="sub"> {`${a[i]}`}</td><td className="total">{`Total ${i}`}</td></tr>);
         }
 
         return table
@@ -122,8 +159,8 @@ class StatsForm extends Component {
         const startDate = moment(this.props.stats.startDate);
         const endDate = moment(this.props.stats.endDate);
         // const defaultKpiValues = this.defaultKpiValues;
-        const stat = this.props.statsData;
-
+        const stat = /*this.staticData*/this.props.statsData;
+        console.log(stat);
         const sub = ({ prop, index }) => (
             Object.keys(prop).map((el,index) => {
                 return (
@@ -180,19 +217,8 @@ class StatsForm extends Component {
                         <table>                 
                             
                             <tbody>
-                            {this.createTable()}
-                                
-                                    {
-                                        Object.keys(stat).map((el,index) => {
-                                            return (
-                                                <tr key={index}>
-                                                    <td>{el}</td>
-                                                </tr>
-                                            );
-                                        })
-                                     }
-                               
-                                
+                                {this.createTable(stat)}
+                                                              
                                 {/* {Object.keys(stat).map((data,i) => (
                                     <tr key={i}>
                                         {Object.keys(data).map((key, index) => (
