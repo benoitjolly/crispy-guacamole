@@ -45,8 +45,10 @@ class StatsForm extends Component {
 
     handleChangeKey = (key) => {
         this.props.dispatch({type: 'SET_KEY', key});
-        const cleanedData = concatDataByKey(this.props.statsData, this.props.statsData.key);
-        this.props.dispatch({type: 'SET_ACQUISITION_DATA', data: cleanedData});
+        setTimeout(() => {
+            const sortedData = concatDataByKey(this.props.stats.originalData, this.props.stats.key);
+            this.props.dispatch({type: 'SET_ACQUISITION_DATA', data: sortedData});
+        },0)
     }
 
     getAcquisitionData = (e) => {
@@ -64,7 +66,9 @@ class StatsForm extends Component {
     
         apiCall(staticData.AcquisitionURL, data, false)
         .then((response) => {
-            const cleanedData = concatDataByKey(response.data.data, this.props.statsData.key);
+            this.props.dispatch({ type: 'SET_ORIGINAL_DATA' , data: response.data.data});
+            
+            const cleanedData = concatDataByKey(response.data.data, this.props.stats.key);
             this.props.dispatch({type: 'SET_ACQUISITION_DATA', data: cleanedData});
             this.props.dispatch({ type: 'LOADING_FALSE' });
             this.props.dispatch({ type: 'NO_ERROR_RECEIVED' });
@@ -94,7 +98,6 @@ class StatsForm extends Component {
         apiCall(staticData.MonetizationURL, data, true)
         .then((response) => {
             const cleanedData = response.data.data;//concatDataByCountry(response.data.data);
-            console.log(cleanedData);
             this.props.dispatch({type: 'SET_MONETIZATION_DATA', data: cleanedData})
             this.props.dispatch({ type: 'LOADING_FALSE' });
             this.props.dispatch({ type: 'NO_ERROR_RECEIVED' });
@@ -117,6 +120,7 @@ class StatsForm extends Component {
     render() {
         const startDate = moment(this.props.stats.startDate);
         const endDate = moment(this.props.stats.endDate);
+        console.log(this.props.statsData);
         return (
             
             <div className="container">
@@ -151,7 +155,7 @@ class StatsForm extends Component {
                 </div> : <div className="post-container">
                     <Select
                         name="form-field-key"
-                        value={this.props.statsData.key}
+                        value={this.props.stats.key}
                         onChange={this.handleChangeKey}
                         options={this.keyArray}
                         isSearchable={true}

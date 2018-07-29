@@ -8,7 +8,9 @@ const statsReducer = (state = {key: 'application', kpi:[{value:'day',label:'Day'
         case 'SET_ENDDATE':
             return {...state,endDate: action.endDate};
         case 'SET_KEY':
-        return { ...state, key: action.key}
+            return { ...state, key: action.key.value}
+        case 'SET_ORIGINAL_DATA':
+            return { ...state, originalData: action.data}
         default:
             return state
     }

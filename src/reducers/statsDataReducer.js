@@ -4,7 +4,7 @@ import {cloneDeep} from 'lodash';
 const statsDataReducer = (state = [], action) => {
     switch (action.type) {
         case 'SET_ACQUISITION_DATA':
-        const data = action.data;
+        const data = cloneDeep(action.data);
             return data;
         case 'SET_VISIBILITY':
         let arrayOfKey = ['application', 'country', 'platform', ];
