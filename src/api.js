@@ -7,12 +7,12 @@ const myApi = axios.create();
 const apiCall = (route, data, Bearer) => {
     if(Bearer){
         
-         let params = {
-            startDate: data.startDate,
-            endDate: data.endDate,
-            dimensions: data.dimensions,
-            aggregates: data.aggregates,
-        };
+        //  let params = {
+        //     startDate: data.startDate,
+        //     endDate: data.endDate,
+        //     dimensions: data.dimensions,
+        //     aggregates: data.aggregates,
+        // };
 
         // axios.defaults.headers.common['Authorization'] = `Bearer mwNNiwFuJ30GqpuYwQHSW0XQx93E2rIS7NRSfxwLz4XI5Yoo5aSP8wvyibhVO8aYeaVLYsCJcFP9V0uzo95ph66qktQwE`;
         // axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -46,7 +46,7 @@ const apiCall = (route, data, Bearer) => {
               aggregates: data.aggregates,
           },
            };
-           console.log(params);
+        //    console.log(params);
         return myApi.get(route, proxyOptions || {});
         // {
         //     headers: {

@@ -90,8 +90,12 @@ table {
   padding-left: 60px;
 }
 
-.table tr.sub3 {
+.table td.sub3 {
   padding-left: 90px;
+}
+
+.table td.sub4 {
+  padding-left: 110px;
 }
 
 .Select {
