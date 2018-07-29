@@ -59,18 +59,37 @@ a:hover {
 button {
   padding: 5px;
   margin-top: 10px;
+  background-color: #02b3e4;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  padding: 6px 20px;
 }
 
 /*TableForm*/
 .table {
   width: 100%;
   overflow: scroll;
-  /* font-size: 10px; */
+  font-size: 12px;
+  padding-top: 25px;
 }
 
 table {
   table-layout: fixed;
   width: 100%;
+}
+
+.table .thead{
+  background-color: #f0f8ff;
+}
+
+.table .thead2{
+  background-color: #f5f9fd;
+}
+
+.table .over:hover {
+  cursor: pointer;
+  background-color: #f5f9fd;
 }
 
 .table td {
@@ -105,8 +124,7 @@ table {
 
 form {
   display:flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;;
   align-items: center;
 }
 

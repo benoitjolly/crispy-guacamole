@@ -41,14 +41,14 @@ class TableComponent extends Component {
                     table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].open && <tr key={`${a}${b}${c}imp`} ><td className="sub4"> Impressions: {`${obj.impressions}`}</td><td className="total">{`Total ${b}`}</td><td>...</td></tr>);
                     table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].open && <tr key={`${a}${b}${c}click`} ><td className="sub4"> Clicks: {`${obj.clicks}`}</td><td className="total">{`Total ${b}`}</td><td>...</td><td>...</td></tr>);
                     table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].open && <tr key={`${a}${b}${c}cost`} ><td className="sub4"> CTR: {`${obj.impressions/obj.clicks}`}</td><td className="total">{`Total ${b}`}</td><td>...</td><td>...</td></tr>);
-                    table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && <tr key={`${a}${b}${c}`} onClick={() => this.props.onClick([a,b,c])}><td className="sub3"> {`${data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].name}`}</td><td className="total">{`${-totalTotalSub3.toFixed(2)}`}</td><td>...</td><td>...</td></tr>);  
+                    table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && <tr className="over" key={`${a}${b}${c}`} onClick={() => this.props.onClick([a,b,c])}><td className="sub3"> {`${data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].name}`}</td><td className="total">{`${-totalTotalSub3.toFixed(2)}`}</td><td>...</td><td>...</td></tr>);  
                 }
-                table.unshift(data[a].open && <tr key={`${a}${b}`} onClick={() => this.props.onClick([a,b])} ><td className="sub2"> {`${data[a][arrayOfKey[0]][b].name}`}</td><td className="total">{-totalSub2.toFixed(2)}</td><td>...</td><td>...</td></tr>);
+                table.unshift(data[a].open && <tr className="over" key={`${a}${b}`} onClick={() => this.props.onClick([a,b])} ><td className="sub2"> {`${data[a][arrayOfKey[0]][b].name}`}</td><td className="total">{-totalSub2.toFixed(2)}</td><td>...</td><td>...</td></tr>);
              }
-             table.unshift(<tr key={`${a}`} onClick={() => this.props.onClick([a])}><td className="sub"> {`${data[a].name}`}</td><td className="total">{-totalSub1.toFixed(2)}</td><td>...</td><td>...</td></tr>);
+             table.unshift(<tr className="over" key={`${a}`} onClick={() => this.props.onClick([a])}><td className="sub"> {`${data[a].name}`}</td><td className="total">{-totalSub1.toFixed(2)}</td><td>...</td><td>...</td></tr>);
         }
-        table.unshift(<tr key={`totalCost`} ><td>Total</td><td className="total">{`${-total.toFixed(2)}`}</td><td>...</td><td>...</td></tr>);
-        table.unshift(<tr key={`thead`} ><td>Tree view</td><td>Total acquisition cost</td><td>Total monetization cost</td><td>Benefit</td></tr>);
+        table.unshift(<tr className="thead2" key={`totalCost`} ><td>Total</td><td className="total">{`${-total.toFixed(2)}`}</td><td>...</td><td>...</td></tr>);
+        table.unshift(<tr className="thead" key={`thead`} ><td>Tree view</td><td>Total acquisition cost</td><td>Total monetization cost</td><td>Benefit</td></tr>);
 
         return table
 

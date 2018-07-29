@@ -21,7 +21,7 @@ class StatsForm extends Component {
         this.MonetizationAggregate = staticData.MonetizationAggregates;
         this.MonetizationDimensions = staticData.MonetizationDimensionsion;
         this.staticData = staticData.data;
-        this.keyArray = [{value: 'application', label: 'Application'},{value: 'platform', label: 'Platform'},{value: 'country', label: 'Country'}, ];
+        this.keyArray = staticData.keyArray;
 
     }
 
@@ -120,12 +120,12 @@ class StatsForm extends Component {
     render() {
         const startDate = moment(this.props.stats.startDate);
         const endDate = moment(this.props.stats.endDate);
-        console.log(this.props.statsData);
         return (
             
             <div className="container">
                 <div className="post-container">
                 <form onSubmit={this.getData}>
+                    <div>
                     <label>Start Date:</label>
                     <DatePicker
                         className="Select"
@@ -133,7 +133,8 @@ class StatsForm extends Component {
                         onChange={this.handleChangeStartDate}
                         maxDate={endDate}
                     />
-                    <br />
+                    </div>
+                    <div>
                     <label>End Date:</label>
                     <DatePicker
                         className="Select"
@@ -141,7 +142,7 @@ class StatsForm extends Component {
                         onChange={this.handleChangeEndDate}
                         minDate={startDate}
                     />
-                    <br />
+                    </div>
                      
                     <button>GO!</button>
                 </form>
@@ -160,6 +161,7 @@ class StatsForm extends Component {
                         options={this.keyArray}
                         isSearchable={true}
                         isClearable={true}
+                        label="Select Sorting:"
                     />
                     <div className="table">
                         <TableComponent data={this.props.statsData} onClick={this.setVisibility}/>

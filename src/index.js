@@ -3,9 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 
-
-// import { BrowserRouter as Router, Route } from 'react-router-dom';
-
 import errorReducer from './reducers/errorReducer';
 import loadingReducer from './reducers/loadingReducer';
 import statsReducer from './reducers/statsReducer';
