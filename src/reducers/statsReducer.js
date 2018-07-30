@@ -1,5 +1,5 @@
 
-const statsReducer = (state = {key: 'application', kpi:[{value:'day',label:'Day'},{value:'impressions',label:'Impressions'}], startDate:'2017-08-01', endDate:'2017-08-02', columns:[]}, action) => {
+const statsReducer = (state = {key: 'application', kpi:[{value:'day',label:'Day'},{value:'impressions',label:'Impressions'}], startDate:'2017-08-05', endDate:'2017-08-11', columns:[]}, action) => {
     switch (action.type) {
         case 'SET_KPI':
             return {...state,kpi: action.kpiValue};
