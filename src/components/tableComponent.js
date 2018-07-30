@@ -38,9 +38,9 @@ class TableComponent extends Component {
                     totalSub2 += obj.cost;
                     totalTotalSub3 += obj.cost;
 
-                    table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].open && <tr key={`${a}${b}${c}imp`} ><td className="sub4"> Impressions: {`${obj.impressions}`}</td><td className="total">{`Total ${b}`}</td><td>...</td></tr>);
-                    table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].open && <tr key={`${a}${b}${c}click`} ><td className="sub4"> Clicks: {`${obj.clicks}`}</td><td className="total">{`Total ${b}`}</td><td>...</td><td>...</td></tr>);
-                    table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].open && <tr key={`${a}${b}${c}cost`} ><td className="sub4"> CTR: {`${obj.impressions/obj.clicks}`}</td><td className="total">{`Total ${b}`}</td><td>...</td><td>...</td></tr>);
+                    table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].open && <tr key={`${a}${b}${c}imp`} ><td colspan="2" className="sub4"> Impressions: {`${obj.impressions.toFixed(2)}`}</td><td>...</td></tr>);
+                    table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].open && <tr key={`${a}${b}${c}click`} ><td colspan="2" className="sub4"> Clicks: {`${obj.clicks.toFixed(2)}`}</td><td>...</td><td>...</td></tr>);
+                    table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].open && <tr key={`${a}${b}${c}cost`} ><td colspan="2" className="sub4"> CTR: {`${(obj.impressions/obj.clicks).toFixed(2)}`}</td><td>...</td><td>...</td></tr>);
                     table.unshift(data[a].open && data[a][arrayOfKey[0]][b].open && <tr className="over" key={`${a}${b}${c}`} onClick={() => this.props.onClick([a,b,c])}><td className="sub3"> {`${data[a][arrayOfKey[0]][b][arrayOfKey[1]][c].name}`}</td><td className="total">{`${-totalTotalSub3.toFixed(2)}`}</td><td>...</td><td>...</td></tr>);  
                 }
                 table.unshift(data[a].open && <tr className="over" key={`${a}${b}`} onClick={() => this.props.onClick([a,b])} ><td className="sub2"> {`${data[a][arrayOfKey[0]][b].name}`}</td><td className="total">{-totalSub2.toFixed(2)}</td><td>...</td><td>...</td></tr>);

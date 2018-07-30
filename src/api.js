@@ -4,9 +4,12 @@ import staticData from './static';
 const myApi = axios.create();
 
 const myApi2 = axios.create({
-    // headers: {
-    //     'Authorization': 'Bearer mwNNiwFuJ30GqpuYwQHSW0XQx93E2rIS7NRSfxwLz4XI5Yoo5aSP8wvyibhVO8aYeaVLYsCJcFP9V0uzo95ph66qktQwE'
-    // },
+    headers: {
+        'Authorization': 'Bearer mwNNiwFuJ30GqpuYwQHSW0XQx93E2rIS7NRSfxwLz4XI5Yoo5aSP8wvyibhVO8aYeaVLYsCJcFP9V0uzo95ph66qktQwE',
+        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
 });
 
 const apiCall = (route, data, Bearer) => {
@@ -20,20 +23,20 @@ const apiCall = (route, data, Bearer) => {
         };
 
               
-        const proxyOptions = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                Authorization:`Bearer mwNNiwFuJ30GqpuYwQHSW0XQx93E2rIS7NRSfxwLz4XI5Yoo5aSP8wvyibhVO8aYeaVLYsCJcFP9V0uzo95ph66qktQwE`,
+        // const proxyOptions = {
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //         Authorization:`Bearer mwNNiwFuJ30GqpuYwQHSW0XQx93E2rIS7NRSfxwLz4XI5Yoo5aSP8wvyibhVO8aYeaVLYsCJcFP9V0uzo95ph66qktQwE`,
                 
-            },
+        //     },
     
-            params : {
-              startDate: data.startDate,
-              endDate: data.endDate,
-              dimensions: data.dimensions,
-              aggregates: data.aggregates,
-          },
-        };
+        //     params : {
+        //       startDate: data.startDate,
+        //       endDate: data.endDate,
+        //       dimensions: data.dimensions,
+        //       aggregates: data.aggregates,
+        //   },
+        // };
       
         return myApi2.get(route, params).then(response => { 
             console.log(response)

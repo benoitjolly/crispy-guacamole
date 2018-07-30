@@ -36,6 +36,7 @@ export function concatDataByKey(data, key){
                 .value(), open:false}))
             .value();
 
+      console.log(dataMerged);
       return dataMerged;    
     }
 
