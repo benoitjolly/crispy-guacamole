@@ -48,6 +48,8 @@ class StatsForm extends Component {
         setTimeout(() => {
             const sortedData = concatDataByKey(this.props.stats.originalData, this.props.stats.key);
             this.props.dispatch({type: 'SET_ACQUISITION_DATA', data: sortedData});
+            const cleanedData = concatDataByKey(staticData.apiMonetization.data, this.props.stats.key);
+            this.props.dispatch({type: 'SET_MONETIZATION_DATA', data: cleanedData})
         },0)
     }
 
@@ -95,22 +97,23 @@ class StatsForm extends Component {
         }
         this.props.dispatch({ type: 'LOADING_TRUE' });
      
-        apiCall(staticData.MonetizationURL, data, true)
-        .then((response) => {
-            const cleanedData = response.data.data;//concatDataByCountry(response.data.data);
+        // apiCall(staticData.MonetizationURL, data, true)
+        // .then((response) => {
+            const cleanedData = concatDataByKey(staticData.apiMonetization.data,'application');
+            console.log(cleanedData);
             this.props.dispatch({type: 'SET_MONETIZATION_DATA', data: cleanedData})
-            this.props.dispatch({ type: 'LOADING_FALSE' });
-            this.props.dispatch({ type: 'NO_ERROR_RECEIVED' });
-        }).catch((error) => {
-            this.props.dispatch({ type: 'LOADING_FALSE' });
-            this.props.dispatch({ type: 'ERROR_RECEIVED' }, error.message);
-        });  
+            // this.props.dispatch({ type: 'LOADING_FALSE' });
+            // this.props.dispatch({ type: 'NO_ERROR_RECEIVED' });
+        // }).catch((error) => {
+        //     this.props.dispatch({ type: 'LOADING_FALSE' });
+        //     this.props.dispatch({ type: 'ERROR_RECEIVED' }, error.message);
+        // });  
     }
 
     getData = (e) => {
         e.preventDefault();
         this.getAcquisitionData(e);
-        // this.getMonetizationData(e);
+        this.getMonetizationData(e);
     }
 
     setVisibility = (node) => {
@@ -120,6 +123,7 @@ class StatsForm extends Component {
     render() {
         const startDate = moment(this.props.stats.startDate);
         const endDate = moment(this.props.stats.endDate);
+
         return (
             
             <div className="container">
@@ -164,7 +168,7 @@ class StatsForm extends Component {
                         label="Select Sorting:"
                     />
                     <div className="table">
-                        <TableComponent data={this.props.statsData} onClick={this.setVisibility}/>
+                        <TableComponent dataAcq={this.props.statsData} dataMo={this.props.statsMonetizationData} onClick={this.setVisibility}/>
                     </div>             
                 </div>}
             

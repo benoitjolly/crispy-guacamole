@@ -11,16 +11,28 @@ export function concatDataByApplication(data){
 }
 
 export function concatDataByKey(data, key){   
-    
+    key = key || 'application';
     let arrayOfKey = ['application', 'country', 'platform', ];
-
-    if(key === 'application'){
+    
+    if(data[0].hasOwnProperty('game')){
+      if(key === 'application'){
+        arrayOfKey = ['game', 'country', 'os', ];
+      } else  if(key === 'country'){
+          arrayOfKey = ['country', 'os', 'game', ];
+      } else  if(key === 'platform'){
+          arrayOfKey = ['os', 'game', 'country', ];
+      }
+    } else {
+      if(key === 'application'){
         arrayOfKey = ['application', 'country', 'platform', ];
-    } else  if(key === 'country'){
-        arrayOfKey = ['country', 'platform', 'application', ];
-    } else  if(key === 'platform'){
-        arrayOfKey = ['platform', 'application', 'country', ];
+      } else  if(key === 'country'){
+          arrayOfKey = ['country', 'platform', 'application', ];
+      } else  if(key === 'platform'){
+          arrayOfKey = ['platform', 'application', 'country', ];
+      }
     }
+
+   
 
     if (typeof data[0] !== 'undefined'){
       let dataMerged;
@@ -36,7 +48,6 @@ export function concatDataByKey(data, key){
                 .value(), open:false}))
             .value();
 
-      console.log(dataMerged);
       return dataMerged;    
     }
 
