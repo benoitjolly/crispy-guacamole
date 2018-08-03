@@ -46,10 +46,13 @@ class StatsForm extends Component {
     handleChangeKey = (key) => {
         this.props.dispatch({type: 'SET_KEY', key});
         setTimeout(() => {
-            const sortedData = concatDataByKey(this.props.stats.originalData, this.props.stats.key);
-            this.props.dispatch({type: 'SET_ACQUISITION_DATA', data: sortedData});
-            const cleanedData = concatDataByKey(staticData.apiMonetization.data, this.props.stats.key);
-            this.props.dispatch({type: 'SET_MONETIZATION_DATA', data: cleanedData})
+            const acquisition = concatDataByKey(this.props.stats.originalData, this.props.stats.key);
+            const monetization = concatDataByKey(staticData.apiMonetization.data, this.props.stats.key);
+            const newData = {
+              acquisition : acquisition,
+              monetization : monetization,
+            };
+            this.props.dispatch({type: 'SET_DATA', data: newData});
         },0)
     }
 
@@ -69,9 +72,14 @@ class StatsForm extends Component {
         apiCall(staticData.AcquisitionURL, data, false)
         .then((response) => {
             this.props.dispatch({ type: 'SET_ORIGINAL_DATA' , data: response.data.data});
-            
-            const cleanedData = concatDataByKey(response.data.data, this.props.stats.key);
-            this.props.dispatch({type: 'SET_ACQUISITION_DATA', data: cleanedData});
+            const monetization = concatDataByKey(staticData.apiMonetization.data, this.props.stats.key);
+            const acquisition = concatDataByKey(response.data.data, this.props.stats.key);
+
+            const newData = {
+              acquisition : acquisition,
+              monetization : monetization,
+            };
+            this.props.dispatch({type: 'SET_DATA', data: newData});
             this.props.dispatch({ type: 'LOADING_FALSE' });
             this.props.dispatch({ type: 'NO_ERROR_RECEIVED' });
         }).catch((error) => {
@@ -100,8 +108,8 @@ class StatsForm extends Component {
         // apiCall(staticData.MonetizationURL, data, true)
         // .then((response) => {
             const cleanedData = concatDataByKey(staticData.apiMonetization.data,'application');
-            console.log(cleanedData);
-            this.props.dispatch({type: 'SET_MONETIZATION_DATA', data: cleanedData})
+            // console.log(cleanedData);
+            // this.props.dispatch({type: 'SET_MONETIZATION_DATA', data: cleanedData})
             // this.props.dispatch({ type: 'LOADING_FALSE' });
             // this.props.dispatch({ type: 'NO_ERROR_RECEIVED' });
         // }).catch((error) => {
@@ -113,7 +121,7 @@ class StatsForm extends Component {
     getData = (e) => {
         e.preventDefault();
         this.getAcquisitionData(e);
-        this.getMonetizationData(e);
+        // this.getMonetizationData(e);
     }
 
     setVisibility = (node) => {
@@ -123,7 +131,6 @@ class StatsForm extends Component {
     render() {
         const startDate = moment(this.props.stats.startDate);
         const endDate = moment(this.props.stats.endDate);
-
         return (
             
             <div className="container">
@@ -168,7 +175,7 @@ class StatsForm extends Component {
                         label="Select Sorting:"
                     />
                     <div className="table">
-                        <TableComponent dataAcq={this.props.statsData} dataMo={this.props.statsMonetizationData} onClick={this.setVisibility}/>
+                        <TableComponent dataAcq={this.props.statsData.acquisition} dataMo={this.props.statsData.monetization} onClick={this.setVisibility}/>
                     </div>             
                 </div>}
             
